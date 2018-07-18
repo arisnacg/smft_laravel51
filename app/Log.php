@@ -18,6 +18,7 @@ class Log extends Model
         // 6 -> tambah organisasi
         // 7 -> hapus organisasi
         // 8 -> ganti password
+        // 9 -> mencoba login saat tidak dalam periode
         'tipe',
         'konten'
     ];

@@ -15,6 +15,11 @@
                     <div class="text-center" style="padding: 50px 0px">
                         <a href="{{ route('sd.index') }}" style="color: #333; font-weight: 700; font-size: 32px;">Student Day</a>
                     </div>
+                    @if(session('info'))
+                        <dir class="alert alert-info text-center">
+                            {{ session('info') }}
+                        </dir>
+                    @endif
                     <div class="card fat">
                         <div class="card-body">
                             <h4 class="card-title">Login</h4>

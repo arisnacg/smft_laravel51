@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Organisasi;
 use App\Log;
-use App\Auth;
+use Auth;
 
 class OrganisasiController extends Controller
 {
@@ -22,6 +22,9 @@ class OrganisasiController extends Controller
 	public function index(Request $req){
 		if(Auth::user()->ganti_pass == 0){
             return redirect('/ganti-password')->with('info', 'Password harus diganti terlebih dahulu');
+        }
+        if(Auth::user()->lengkap == 0){
+            return redirect('beranda-sd-biodata')->with('info', 'Lengkapi Biodata diganti terlebih dahulu');
         }
 		$mahasiswa = User::with('organisasi')->findOrFail($req->user()->id);
 		return view('sd.organisasi', compact('mahasiswa'));

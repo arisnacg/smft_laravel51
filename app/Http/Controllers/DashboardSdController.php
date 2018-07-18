@@ -7,6 +7,7 @@ use Auth;
 use DB;
 use Session;
 use PDF;
+use Carbon\Carbon;
 use Response;
 use Validator;
 use App\User;
@@ -16,6 +17,8 @@ use App\GolonganDarah;
 use App\JenisKelamin;
 use App\Agama;
 use App\PengumumanStudentDay;
+use App\Periode;
+use App\Log;
 
 class DashboardSdController extends Controller
 {
@@ -36,6 +39,40 @@ class DashboardSdController extends Controller
      */
     public function index()
     {
+        date_default_timezone_set('Asia/Singapore');
+        $periodes = Periode::with('prodi')->get();
+        $status = 0;
+        foreach($periodes as $periode){
+            $mulai = Carbon::parse($periode->mulai);
+            $berakhir = Carbon::parse($periode->berakhir);
+            if(Carbon::now()->between($mulai, $berakhir) || ($periode->mulai->isToday() || $periode->berakhir->isToday())){
+                if($periode->prodi_id == 0 || Auth::user()->program_studi == $periode->prodi_id){
+                    $status = 1;
+                    break;
+                } else {
+                    Log::create([
+                        'mahasiswa_id' => Auth::user()->id,
+                        'tipe' => 9,
+                        'konten' => 'Mencoba login saat tidak dalam periode'
+                    ]);
+                    Log::create([
+                        'mahasiswa_id' => Auth::user()->id,
+                        'tipe' => 2,
+                        'konten' => 'Log Out'
+                    ]);
+                    Auth::logout(Auth::user());
+                    return redirect('/login')->with('info', 'Hanya Program Studi '. $periode->prodi->nama.' yang dapat mengakses saat ini');
+                }
+                $status = 1;
+            }
+        }
+
+        if(!$status){
+            return 0;
+            Auth::logout(Auth::user());
+            return redirect('/login');
+        }
+
         if(Auth::user()->ganti_pass == 0){
             return redirect('/ganti-password')->with('info', 'Password harus diganti terlebih dahulu');
         }

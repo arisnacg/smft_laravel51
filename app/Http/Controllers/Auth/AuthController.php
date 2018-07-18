@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Validator;
+use App\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -106,6 +107,11 @@ class AuthController extends Controller
         $credentials = $this->getCredentials($request);
 
         if (Auth::attempt($this->user(), $credentials, $request->has('remember'))) {
+            Log::create([
+                'mahasiswa_id' => Auth::user()->id,
+                'tipe' => 1,
+                'konten' => 'Log In'
+            ]);
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
 
@@ -129,5 +135,17 @@ class AuthController extends Controller
                     $this->loginUsername() => $this->getFailedLoginMessage(),
                 ]);
         }
+    }
+
+    public function getLogout()
+    {
+        Log::create([
+            'mahasiswa_id' => Auth::user()->id,
+            'tipe' => 2,
+            'konten' => 'Log Out'
+        ]);
+        Auth::logout($this->user());
+        
+        return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
     }
 }

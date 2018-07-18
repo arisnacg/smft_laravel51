@@ -63,6 +63,7 @@ class BerandaController extends Controller
     	]);
 
     	$req->user()->update($req->all());
+        $req->user()->update(['lengkap' => 1]);
 
     	Log::create([
     		'mahasiswa_id' => $req->user()->id,

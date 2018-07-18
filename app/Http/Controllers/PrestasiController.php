@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Prestasi;
 use App\Log;
-use App\Auth;
+use Auth;
 
 class PrestasiController extends Controller
 {
@@ -22,6 +22,9 @@ class PrestasiController extends Controller
 	public function index(Request $req){
 		if(Auth::user()->ganti_pass == 0){
             return redirect('/ganti-password')->with('info', 'Password harus diganti terlebih dahulu');
+        }
+        if(Auth::user()->lengkap == 0){
+            return redirect('beranda-sd-biodata')->with('info', 'Lengkapi Biodata diganti terlebih dahulu');
         }
 		$mahasiswa = User::findOrFail($req->user()->id);
 		$prestasi = Prestasi::where('mahasiswa_id', $req->user()->id)->get();
