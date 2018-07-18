@@ -25,7 +25,7 @@
                             <th scope="col">Nama Prestasi</th>
                             <th scope="col">Tingkat</th>
                             <th scope="col">Tahun</th>
-                            <th scope="col">Operasi</th>
+                            <th scope="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,17 +37,54 @@
                             <td>{{ $row->tingkat }}</td>
                             <td>{{ $row->tahun }}</td>
                             <td>
-                                <form method="POST" action="/prestasi/{{ $row->id }}">
-                                    @csrf
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete">
+                                    <i class="fa fa-trash"></i>
+                                    Hapus
+                                </button>
+                                <!-- Modal Delete Prestasi -->
+                                <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Apakah Anda yakin menghapus prestasi <b>{{$row->nama}}</b>?
+                                            </div>
+                                                <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Batal</button>
+                                                <form method="POST" action="/prestasi/{{ $row->id }}">
+                                                    {{ csrf_field() }}
+                                                    {{ method_field('DELETE') }}
+                                                    <button class="btn btn-danger" type="submit">
+                                                        <i class="fa fa-trash"></i>
+                                                        Hapus
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- <form method="POST" action="/prestasi/{{ $row->id }}">
+                                    {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
                                     <button class="btn btn-danger" type="submit">
                                         <i class="fa fa-trash"  style="margin-right: 10px"></i>
                                         Hapus
                                     </button>
-                                </form>
+                                </form> --}}
                             </td>
                         </tr>
                         @endforeach
+                    @else
+                        <tr>
+                            <td colspan="5">
+                                <p style="text-align: center;">Tidak ada prestasi</p>
+                            </td>
+                        </tr>
                     @endif
                     </tbody>
                 </table>
@@ -55,7 +92,7 @@
         </div>
     </div>
 
-<!-- Modal Show -->
+    <!-- Modal Add Prestasi -->
     <div class="modal fade" id="modalTambah" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -66,7 +103,7 @@
                     </button>
                 </div>
                 <form method="POST" action="/prestasi">
-                @csrf
+                {{ csrf_field() }}
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="label-control">Nama Prestasi</label>
@@ -84,7 +121,7 @@
                     </div>
                     <div class="form-group">
                         <label class="label-control">Tahun</label>
-                        <input type="text" name="tahun" class="form-control" placeholder="Contoh: 2016">
+                        <input type="text" name="tahun" class="form-control" placeholder="Contoh: 2018">
                         @if($errors->has('tahun'))
                             <small class="text-danger">{{ $errors->first('tahun') }}</small>
                         @endif
@@ -100,5 +137,4 @@
             </div>
         </div>
     </div><!-- End Modal -->
-
 @endsection

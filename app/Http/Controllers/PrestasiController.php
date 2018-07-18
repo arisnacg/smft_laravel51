@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Mahasiswa;
+use App\User;
 use App\Prestasi;
 use App\Log;
 
@@ -13,13 +13,13 @@ class PrestasiController extends Controller
 		$this->middleware('auth:admin', [
 			'only' => ['show']
 		]);
-		$this->middleware('auth:mahasiswa', [
+		$this->middleware('auth:user', [
 			'only' => ['index', 'store', 'destroy']
 		]);
 	}
 
 	public function index(Request $req){
-		$mahasiswa = Mahasiswa::findOrFail($req->user()->id);
+		$mahasiswa = User::findOrFail($req->user()->id);
 		$prestasi = Prestasi::where('mahasiswa_id', $req->user()->id)->get();
 		return view('sd.prestasi', compact('mahasiswa', 'prestasi'));
 	}
@@ -61,7 +61,7 @@ class PrestasiController extends Controller
 	}
 
     public function show($id){
-    	$mahasiswa = Mahasiswa::findOrFail($id);
+    	$mahasiswa = User::findOrFail($id);
 		$prestasi = Prestasi::where('mahasiswa_id', $id)->get();
     	return view('admin.prestasi', compact('mahasiswa', 'prestasi'));
     }
