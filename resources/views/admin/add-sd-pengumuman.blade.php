@@ -10,7 +10,7 @@
         <div class="card-body">
             <div class="col-md-12">
                 <form action="{{ route('admin.sd-pengumuman-store') }}" method="post" enctype="multipart/form-data">
-                    @csrf
+                    {{ csrf_field() }}
                     <table class="table table-borderless">
                         <tbody>
                             <tr>

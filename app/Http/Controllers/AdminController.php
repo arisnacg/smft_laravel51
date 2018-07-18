@@ -40,16 +40,16 @@ class AdminController extends Controller
      */
     public function index()
     {
-        // $mahasiswa = User::all()->count();
-        // $verifikasi = DB::table('users')
-        //                 ->join('tb_log', 'users.id', '=', 'tb_log.mahasiswa_id')
-        //                 ->select('users.*', 'tb_log.*')
-        //                 ->where('tb_log.tipe', '=', 8)
-        //                 ->get();
-        // $belum_verifikasi = $mahasiswa - $verifikasi;
+        $mahasiswa = User::all()->count();
+        // return $mahasiswa;
+        $verifikasi = DB::table('users')
+                        ->join('logs', 'users.id', '=', 'logs.mahasiswa_id')
+                        ->select('users.*', 'logs.*')
+                        ->where('logs.tipe', '=', 8)
+                        ->count();
+        $belum_verifikasi = $mahasiswa - $verifikasi;
                         
-        //return view('admin.index', compact('mahasiswa', 'verifikasi', 'belum_verifikasi'));
-        return view('admin.index');
+        return view('admin.index', compact('mahasiswa', 'verifikasi', 'belum_verifikasi'));
     }
 
     /**
@@ -193,7 +193,7 @@ class AdminController extends Controller
                         ->withInput();
         }
 
-        $mahasiswa = new Mahasiswa;
+        $mahasiswa = new User;
         $mahasiswa->nim = $request->nim;
         $mahasiswa->password = Hash::make($request->nim);
         $mahasiswa->nama = $request->nama;

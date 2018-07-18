@@ -10,7 +10,7 @@
         <div class="card-body">
             <div class="col-md-8">
                 <form action="{{ route('admin.mahasiswa-store') }}" method="post">
-                    @csrf
+                    {{ csrf_field() }}
                     <table class="table table-borderless">
                         <tbody>
                             <tr>

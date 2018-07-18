@@ -20,7 +20,6 @@
     @endif
     <div class="card mb-4">
         <div class="card-body">
-            <a href="{{ route('admin.mahasiswa-create') }}" class="btn btn-primary mb-3"><i class="fa fa-plus-circle mr-1"></i>Tambah angkatan</a>
             <div class="table-responsive">
                 <table id="table" class="table table-hover">
                     <thead>
@@ -32,9 +31,9 @@
                     </thead>
                     <tbody>
                         @if (count($data))
-                            @foreach ($data as $angkatan)
+                            @foreach ($data as $i => $angkatan)
                                 <tr>
-                                    <th>{{ $loop->iteration }}</th>
+                                    <th>{{ $i+1 }}</th>
                                     <td>{{ $angkatan->tahun }}</td>
                                     <td>
                                         <!-- Edit -->
@@ -76,14 +75,14 @@
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-edit"></i> Edit Angkatan</h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-trash mr-1"></i>Hapus Angkatan</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
                                                     <form action="{{ route('admin.angkatan-destroy', $angkatan->id) }}" method="POST">
                                                         <div class="modal-body">
-                                                            @csrf
+                                                            {{ csrf_field() }}
                                                             {{ method_field('delete') }}
                                                             Apakah Anda yakin menghapus angkatan <b>{{ $angkatan->tahun }}?</b>
                                                     
