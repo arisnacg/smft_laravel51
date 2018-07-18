@@ -12,6 +12,8 @@ use Sarav\Multiauth\Foundation\AuthenticatesAndRegistersUsers;
 
 class AuthController extends Controller
 {
+    protected $redirectPath = '/beranda-sd';
+
     /*
     |--------------------------------------------------------------------------
     | Registration & Login Controller

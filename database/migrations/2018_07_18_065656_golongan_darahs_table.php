@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProdisTable extends Migration
+class GolonganDarahsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +12,10 @@ class CreateProdisTable extends Migration
      */
     public function up()
     {
-        Schema::create('tb_prodi', function (Blueprint $table) {
+        Schema::create('golongan_darahs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nama');
+            $table->string('nama', 2);
+            $table->timestamps();
         });
     }
 
@@ -26,6 +26,6 @@ class CreateProdisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_prodi');
+        Schema::dropIfExists('golongan_darahs');
     }
 }

@@ -11,7 +11,7 @@ use App\Log;
 class PasswordController extends Controller
 {
     public function __construct(){
-    	$this->middleware('auth:mahasiswa');
+    	$this->middleware('auth:users');
     }
 
     public function gantiPasswordForm(){

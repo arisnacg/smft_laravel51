@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePrestasisTable extends Migration
+class AdminsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +12,12 @@ class CreatePrestasisTable extends Migration
      */
     public function up()
     {
-        Schema::create('tb_prestasi', function (Blueprint $table) {
+        Schema::create('admins', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('mahasiswa_id');
-            $table->string('nama');
-            $table->string('tingkat');
-            $table->integer('tahun');
+            $table->string('name', 50);
+            $table->string('email')->unique();
+            $table->string('password', 100);
+            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreatePrestasisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_prestasi');
+        Schema::dropIfExists('admins');
     }
 }

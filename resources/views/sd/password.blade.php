@@ -25,7 +25,7 @@
     <div class="card mb-4">
         <div class="card-body">
             <form method="POST" action="/ganti-password">
-                @csrf
+                {!! csrf_field() !!}
                 <div class="form-group row">
                     <label class="label-control col-sm-2">Password Lama :</label>
                     <div class="col-sm-6">
