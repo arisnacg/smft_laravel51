@@ -18,7 +18,7 @@
         <div class="card-body">
             <div class="col-md-8">
                 <form action="{{ route('beranda-sd.update', Auth::user()->id) }}" method="post">
-                    @csrf
+                    {{ csrf_field() }}
                     {{ method_field('PUT') }}
                     <table class="table table-borderless">
                         <tbody>

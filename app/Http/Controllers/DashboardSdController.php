@@ -9,7 +9,7 @@ use Session;
 use PDF;
 use Response;
 use Validator;
-use App\Mahasiswa;
+use App\User;
 use App\Angkatan;
 use App\ProgramStudi;
 use App\GolonganDarah;
@@ -26,7 +26,7 @@ class DashboardSdController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:mahasiswa');
+        $this->middleware('auth:user');
     }
 
     /**
@@ -57,15 +57,15 @@ class DashboardSdController extends Controller
             return redirect('/ganti-password')->with('info', 'Password harus diganti terlebih dahulu');
         }
    
-        $data = DB::table('mahasiswas')
-                ->leftjoin('angkatans', 'mahasiswas.angkatan', '=', 'angkatans.id')
-                ->leftjoin('golongan_darahs', 'mahasiswas.gol_darah', '=', 'golongan_darahs.id')
-                ->leftJoin('jenis_kelamins', 'mahasiswas.jenis_kelamin', '=', 'jenis_kelamins.id')
-                ->leftjoin('program_studis', 'mahasiswas.program_studi', '=', 'program_studis.id')
-                ->leftjoin('agamas', 'mahasiswas.agama', '=', 'agamas.id')
-                ->select('mahasiswas.*', 'angkatans.tahun as tahun', 'golongan_darahs.nama as goldar', 'jenis_kelamins.nama as jk', 
+        $data = DB::table('users')
+                ->leftjoin('angkatans', 'users.angkatan', '=', 'angkatans.id')
+                ->leftjoin('golongan_darahs', 'users.gol_darah', '=', 'golongan_darahs.id')
+                ->leftJoin('jenis_kelamins', 'users.jenis_kelamin', '=', 'jenis_kelamins.id')
+                ->leftjoin('program_studis', 'users.program_studi', '=', 'program_studis.id')
+                ->leftjoin('agamas', 'users.agama', '=', 'agamas.id')
+                ->select('users.*', 'angkatans.tahun as tahun', 'golongan_darahs.nama as goldar', 'jenis_kelamins.nama as jk', 
                         'program_studis.nama as prodi', 'agamas.nama as agama_')
-                ->where('mahasiswas.id', '=', Auth::user()->id)
+                ->where('users.id', '=', Auth::user()->id)
                 ->first();
         // return Response::json($data);
         return view('sd.biodata', compact('data', 'organisasis', 'prestasis'));
@@ -75,12 +75,12 @@ class DashboardSdController extends Controller
         if(Auth::user()->ganti_pass == 0){
             return redirect('/ganti-password')->with('info', 'Password harus diganti terlebih dahulu');
         }
-        $data = DB::table('mahasiswas')
-                ->leftjoin('angkatans', 'mahasiswas.angkatan', '=', 'angkatans.id')
-                ->leftjoin('program_studis', 'mahasiswas.program_studi', '=', 'program_studis.id')
-                ->leftjoin('agamas', 'mahasiswas.agama', '=', 'agamas.id')
-                ->select('mahasiswas.*', 'angkatans.tahun as tahun', 'program_studis.nama as prodi', 'agamas.nama as agama_')
-                ->where('mahasiswas.id', '=', Auth::user()->id)
+        $data = DB::table('users')
+                ->leftjoin('angkatans', 'users.angkatan', '=', 'angkatans.id')
+                ->leftjoin('program_studis', 'users.program_studi', '=', 'program_studis.id')
+                ->leftjoin('agamas', 'users.agama', '=', 'agamas.id')
+                ->select('users.*', 'angkatans.tahun as tahun', 'program_studis.nama as prodi', 'agamas.nama as agama_')
+                ->where('users.id', '=', Auth::user()->id)
                 ->first();
         return view('sd.cetak-berkas', compact('data'));
     }
@@ -90,11 +90,11 @@ class DashboardSdController extends Controller
         if(Auth::user()->lengkap == 0){
             return redirect()->route('beranda-sd.cetak-berkas');
         }
-        $data = DB::table('mahasiswas')
-                ->leftjoin('angkatans', 'mahasiswas.angkatan', '=', 'angkatans.id')
-                ->leftjoin('program_studis', 'mahasiswas.program_studi', '=', 'program_studis.id')
-                ->select('mahasiswas.*', 'angkatans.tahun as tahun', 'program_studis.nama as prodi')
-                ->where('mahasiswas.id', '=', Auth::user()->id)
+        $data = DB::table('users')
+                ->leftjoin('angkatans', 'users.angkatan', '=', 'angkatans.id')
+                ->leftjoin('program_studis', 'users.program_studi', '=', 'program_studis.id')
+                ->select('users.*', 'angkatans.tahun as tahun', 'program_studis.nama as prodi')
+                ->where('users.id', '=', Auth::user()->id)
                 ->first();
         $pdf = PDF::loadView('sd.name-tag-pdf', compact('data'));
         return $pdf->setPaper('a4', 'potrait')->stream();
@@ -106,27 +106,27 @@ class DashboardSdController extends Controller
             return redirect()->route('beranda-sd.cetak-berkas');
         }
         $prestasis = DB::table('prestasis')
-                    ->leftJoin('mahasiswas', 'prestasis.mahasiswa_id', '=', 'mahasiswas.id')
+                    ->leftJoin('users', 'prestasis.mahasiswa_id', '=', 'users.id')
                     ->select('prestasis.nama')
                     ->get();
         // return $prestasis;
         
         $organisasis = DB::table('organisasis')
-                    ->leftJoin('mahasiswas', 'organisasis.mahasiswa_id', '=', 'mahasiswas.id')
+                    ->leftJoin('users', 'organisasis.mahasiswa_id', '=', 'users.id')
                     ->select('organisasis.nama')
                     ->get();
         // return $organisasis;
 
-        $data = DB::table('mahasiswas')
-                ->leftjoin('angkatans', 'mahasiswas.angkatan', '=', 'angkatans.id')
-                ->leftjoin('program_studis', 'mahasiswas.program_studi', '=', 'program_studis.id')
-                ->leftjoin('golongan_darahs', 'mahasiswas.gol_darah', '=', 'golongan_darahs.id')
-                ->leftjoin('agamas', 'mahasiswas.agama', '=', 'agamas.id')
-                ->leftjoin('organisasis', 'mahasiswas.id', '=', 'organisasis.mahasiswa_id')
-                ->leftjoin('prestasis', 'mahasiswas.id', '=', 'prestasis.mahasiswa_id')
-                ->select('mahasiswas.*', 'angkatans.tahun as tahun', 'program_studis.nama as prodi', 
+        $data = DB::table('users')
+                ->leftjoin('angkatans', 'users.angkatan', '=', 'angkatans.id')
+                ->leftjoin('program_studis', 'users.program_studi', '=', 'program_studis.id')
+                ->leftjoin('golongan_darahs', 'users.gol_darah', '=', 'golongan_darahs.id')
+                ->leftjoin('agamas', 'users.agama', '=', 'agamas.id')
+                ->leftjoin('organisasis', 'users.id', '=', 'organisasis.mahasiswa_id')
+                ->leftjoin('prestasis', 'users.id', '=', 'prestasis.mahasiswa_id')
+                ->select('users.*', 'angkatans.tahun as tahun', 'program_studis.nama as prodi', 
                         'golongan_darahs.nama as goldar', 'agamas.nama as agama_')
-                ->where('mahasiswas.id', '=', Auth::user()->id)
+                ->where('users.id', '=', Auth::user()->id)
                 ->first(); 
         // return Response::json($data);       
         $pdf = PDF::loadView('sd.biodata-pdf', compact('data', 'prestasis', 'organisasis'));
@@ -137,10 +137,10 @@ class DashboardSdController extends Controller
         if(Auth::user()->lengkap == 0){
             return redirect()->route('beranda-sd.cetak-berkas');
         }
-        $data = DB::table('mahasiswas')
-                ->join('program_studis', 'mahasiswas.program_studi', '=', 'program_studis.id')
-                ->select('mahasiswas.*', 'program_studis.nama as prodi')
-                ->where('mahasiswas.id', '=', Auth::user()->id)
+        $data = DB::table('users')
+                ->join('program_studis', 'users.program_studi', '=', 'program_studis.id')
+                ->select('users.*', 'program_studis.nama as prodi')
+                ->where('users.id', '=', Auth::user()->id)
                 ->first();
         $pdf = PDF::loadView('sd.evaluasi-pdf', compact('data'));
         return $pdf->setPaper('a4', 'potrait')->stream();
@@ -189,7 +189,7 @@ class DashboardSdController extends Controller
         if(Auth::user()->ganti_pass == 0){
             return redirect('/ganti-password')->with('info', 'Password harus diganti terlebih dahulu');
         }
-        $data = Mahasiswa::find(Auth::user()->id);
+        $data = User::find(Auth::user()->id);
         $program_studi = ProgramStudi::all();
         $angkatans = Angkatan::all();
         $gol_darahs = GolonganDarah::all();
@@ -249,7 +249,7 @@ class DashboardSdController extends Controller
                         ->withInput();
         }
 
-        $mahasiswa = Mahasiswa::find($id);
+        $mahasiswa = User::find($id);
         $mahasiswa->nama = $request->nama;
         $mahasiswa->nama_panggilan = $request->nama_panggilan;
         $mahasiswa->program_studi = $request->program_studi;
