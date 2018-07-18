@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Mahasiswa;
+use App\User;
 use App\Organisasi;
 use App\Log;
 
@@ -19,7 +19,7 @@ class OrganisasiController extends Controller
 	}
 
 	public function index(Request $req){
-		$mahasiswa = Mahasiswa::with('organisasi')->findOrFail($req->user()->id);
+		$mahasiswa = User::with('organisasi')->findOrFail($req->user()->id);
 		return view('sd.organisasi', compact('mahasiswa'));
 	}
 
@@ -60,7 +60,7 @@ class OrganisasiController extends Controller
 	}
 
 	public function show($id){
-    	$mahasiswa = Mahasiswa::with('organisasi')->findOrFail($id);
+    	$mahasiswa = User::with('organisasi')->findOrFail($id);
     	return view('admin.organisasi', compact('mahasiswa'));
     }
 }

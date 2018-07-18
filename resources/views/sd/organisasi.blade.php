@@ -38,7 +38,7 @@
                             <td>{{ $organisasi->tahun }}</td>
                             <td>
                                 <form method="POST" action="/organisasi/{{ $organisasi->id }}">
-                                    @csrf
+                                    {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
                                     <button class="btn btn-danger" type="submit">
                                         <i class="fa fa-trash"  style="margin-right: 10px"></i>
@@ -48,6 +48,12 @@
                             </td>
                         </tr>
                         @endforeach
+                    @else
+                        <tr>
+                            <td colspan="5">
+                                <p class="text-center">Tidak ada pengalaman organisasi</p>
+                            </td>
+                        </tr>
                     @endif
                     </tbody>
                 </table>
