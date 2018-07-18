@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use App\Mahasiswa;
+use App\User;
 use App\ProgramStudi;
 use App\Angkatan;
 use App\PengumumanStudentDay;
@@ -21,15 +21,17 @@ use Auth;
 
 class AdminController extends Controller
 {
+
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth:admin');
-    // }
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
 
     /**
      * Display a listing of the resource.
@@ -38,16 +40,16 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $mahasiswa = Mahasiswa::all()->count();
-        $verifikasi = DB::table('mahasiswas')
-                        ->join('logs', 'mahasiswas.id', 'logs.mahasiswa_id')
-                        ->select('mahasiswas.*', 'logs.*')
-                        ->where('logs.tipe', '=', 8)
-                        ->get()->count();
-
-        $belum_verifikasi = $mahasiswa - $verifikasi;
+        // $mahasiswa = User::all()->count();
+        // $verifikasi = DB::table('users')
+        //                 ->join('tb_log', 'users.id', '=', 'tb_log.mahasiswa_id')
+        //                 ->select('users.*', 'tb_log.*')
+        //                 ->where('tb_log.tipe', '=', 8)
+        //                 ->get();
+        // $belum_verifikasi = $mahasiswa - $verifikasi;
                         
-        return view('admin.index', compact('mahasiswa', 'verifikasi', 'belum_verifikasi'));
+        //return view('admin.index', compact('mahasiswa', 'verifikasi', 'belum_verifikasi'));
+        return view('admin.index');
     }
 
     /**
@@ -57,12 +59,12 @@ class AdminController extends Controller
      */
     public function mahasiswaIndex()
     {
-        $data = DB::table('mahasiswas')
-                    ->leftJoin('program_studis', 'mahasiswas.program_studi', '=', 'program_studis.id')
-                    ->leftJoin('jenis_kelamins', 'mahasiswas.jenis_kelamin', '=', 'jenis_kelamins.id')
-                    ->leftJoin('golongan_darahs', 'mahasiswas.gol_darah', '=', 'golongan_darahs.id')
-                    ->leftJoin('angkatans', 'mahasiswas.angkatan', '=', 'angkatans.id')
-                    ->select('mahasiswas.*', 'program_studis.nama as prodi', 'jenis_kelamins.nama as jk', 'golongan_darahs.nama as goldar', 'angkatans.tahun as tahun')
+        $data = DB::table('users')
+                    ->leftJoin('program_studis', 'users.program_studi', '=', 'program_studis.id')
+                    ->leftJoin('jenis_kelamins', 'users.jenis_kelamin', '=', 'jenis_kelamins.id')
+                    ->leftJoin('golongan_darahs', 'users.gol_darah', '=', 'golongan_darahs.id')
+                    ->leftJoin('angkatans', 'users.angkatan', '=', 'angkatans.id')
+                    ->select('users.*', 'program_studis.nama as prodi', 'jenis_kelamins.nama as jk', 'golongan_darahs.nama as goldar', 'angkatans.tahun as tahun')
                     ->orderBy('nim', 'asc')
                     ->get();
         // return $data;
@@ -322,7 +324,7 @@ class AdminController extends Controller
      */
     public function mahasiswaEdit($id)
     {
-        $data = Mahasiswa::find($id);
+        $data = User::find($id);
         $program_studi = ProgramStudi::all();
         $angkatans = Angkatan::all();
         $jenis_kelamins = JenisKelamin::all();
@@ -381,7 +383,7 @@ class AdminController extends Controller
                         ->withInput();
         }
 
-        $mahasiswa = Mahasiswa::find($id);
+        $mahasiswa = User::find($id);
         $mahasiswa->nim = $request->nim;
         $mahasiswa->nama = $request->nama;
         $mahasiswa->nama_panggilan = $request->nama_panggilan;
@@ -508,7 +510,7 @@ class AdminController extends Controller
      */
     public function mahasiswaDestroy($id)
     {
-        $mahasiswa = Mahasiswa::find($id);
+        $mahasiswa = User::find($id);
         $mahasiswa->delete();
         Session::flash('success', 'Mahasiswa berhasil dihapus');
         return redirect()->route('admin.mahasiswa');
@@ -578,12 +580,12 @@ class AdminController extends Controller
     //     'moto', 'jumlah_saudara', 'nama_ayah', 'nama_ibu', 'vegetarian', 'penyakit_khusus', 
     //     'mahasiswa_baru', 'angkatan', 'ganti_pass'
     // ];
-        // $data = Mahasiswa::with([
+        // $data = User::with([
         //     'prodi',
         //     'mhsangkatan',
         //     'goldarah',
         //     'kelamin',
-        //     'logs' => function($q){
+        //     'tb_log' => function($q){
         //         $q->where('tipe', 1)->orderBy('id', 'desc')->first();
         //     }
         // ])->withCount('prestasi', 'organisasi')->get();
@@ -649,7 +651,7 @@ class AdminController extends Controller
         //         'Angkatan' => $row->mhsangkatan->tahun,
         //         'Prestasi' => $row->prestasi_count,
         //         'Pengalaman Organisasi' => $row->organisasi_count,
-        //         'Terakhir Login' => (isset($row->logs))? $row->logs[0]->created_at->format('d-m-Y') : 'Tidak Ada'
+        //         'Terakhir Login' => (isset($row->tb_log))? $row->tb_log[0]->created_at->format('d-m-Y') : 'Tidak Ada'
         //     );
         // }
         //
@@ -677,9 +679,9 @@ class AdminController extends Controller
     }
 
     public function buatPassword() {
-        $data = Mahasiswa::all();
+        $data = User::all();
         foreach($data as $row){
-            Mahasiswa::find($row->id)->update([
+            User::find($row->id)->update([
                 'password' => bcrypt($row->nim)
             ]);
         }

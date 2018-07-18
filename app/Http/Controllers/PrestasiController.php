@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Prestasi;
 use App\Log;
+use App\Auth;
 
 class PrestasiController extends Controller
 {
 	public function __construct(){
-		$this->middleware('auth:admin', [
+		$this->middleware('admin', [
 			'only' => ['show']
 		]);
 		$this->middleware('auth:user', [
@@ -19,6 +20,9 @@ class PrestasiController extends Controller
 	}
 
 	public function index(Request $req){
+		if(Auth::user()->ganti_pass == 0){
+            return redirect('/ganti-password')->with('info', 'Password harus diganti terlebih dahulu');
+        }
 		$mahasiswa = User::findOrFail($req->user()->id);
 		$prestasi = Prestasi::where('mahasiswa_id', $req->user()->id)->get();
 		return view('sd.prestasi', compact('mahasiswa', 'prestasi'));

@@ -17,7 +17,7 @@
                 </div>
                 <div class="flex-grow-1 bg-white p-4">
                     <p class="text-uppercase text-secondary mb-0">Total Mahasiswa</p>
-                    <h3 class="font-weight-bold mb-0">{{ $mahasiswa }}</h3>
+                    {{-- <h3 class="font-weight-bold mb-0">{{ $mahasiswa }}</h3> --}}
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="flex-grow-1 bg-white p-4">
                     <p class="text-uppercase text-secondary mb-0">Sudah Verifikasi</p>
-                    <h3 class="font-weight-bold mb-0">{{ $verifikasi }}</h3>
+                    {{-- <h3 class="font-weight-bold mb-0">{{ $verifikasi }}</h3> --}}
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="flex-grow-1 bg-white p-4">
                     <p class="text-uppercase text-secondary mb-0">Belum Verifikasi</p>
-                    <h3 class="font-weight-bold mb-0">{{ $belum_verifikasi }}</h3>
+                    {{-- <h3 class="font-weight-bold mb-0">{{ $belum_verifikasi }}</h3> --}}
                 </div>
             </div>
         </div>

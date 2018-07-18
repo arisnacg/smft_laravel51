@@ -13,7 +13,6 @@ class UserTableSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'id' => 1, 
                 'nim' => '1605551033',
                 'password' => '$2y$10$EuWXEPoLh1JqOVu1jWWYD.fBK84fh0qyKiArQ/6NHv6GDCD8VlPtK', // 111111
                 'nama' => 'I Gede Agus Pradipta',

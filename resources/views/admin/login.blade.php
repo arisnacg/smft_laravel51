@@ -19,10 +19,10 @@
 					<div class="card fat">
 						<div class="card-body">
 							<h4 class="card-title">Login Admin</h4>
-							<form method="POST" action="{{ route('admin.login.submit') }}">
-								@csrf
+							<form method="POST" action="/admin/login">
+								{{ csrf_field() }}
 								<div class="form-group">
-									<label for="email">email</label>
+									<label for="email">Email</label>
 
 									<input id="email" type="email" class="form-control" name="email" value="" required autofocus>
 								</div>

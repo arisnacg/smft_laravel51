@@ -6,19 +6,23 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Organisasi;
 use App\Log;
+use App\Auth;
 
 class OrganisasiController extends Controller
 {
     public function __construct(){
-		$this->middleware('auth:admin', [
+		$this->middleware('admin', [
 			'only' => ['show']
 		]);
-		$this->middleware('auth:mahasiswa', [
+		$this->middleware('auth:user', [
 			'only' => ['index', 'store', 'destroy']
 		]);
 	}
 
 	public function index(Request $req){
+		if(Auth::user()->ganti_pass == 0){
+            return redirect('/ganti-password')->with('info', 'Password harus diganti terlebih dahulu');
+        }
 		$mahasiswa = User::with('organisasi')->findOrFail($req->user()->id);
 		return view('sd.organisasi', compact('mahasiswa'));
 	}

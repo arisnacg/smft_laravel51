@@ -20,6 +20,11 @@ Route::get('/login', 'Auth\AuthController@getLogin')->name('login');
 Route::post('/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout')->name('logout');
 
+//Login Admin
+Route::get('/admin/login', 'Auth\AdminAuthController@getLogin')->name('admin.login');
+Route::post('/admin/login', 'Auth\AdminAuthController@postLogin');
+Route::get('/admin/logout', 'Auth\AdminAuthController@getLogout')->name('admin.logout');
+
 
 // Route::get('/edit', function () {
 //     return view('admin.edit-mahasiswa');
@@ -59,13 +64,12 @@ Route::resource('/organisasi', 'OrganisasiController');
 // End Admin
 
 // Admin Auth
-Route::get('/login/admin', 'AuthAdmin\LoginController@showLoginForm')->name('admin.login');
-Route::post('/admin/login', 'AuthAdmin\LoginController@login')->name('admin.login.submit');
-Route::post('/admin/logout', 'AuthAdmin\LoginController@logout')->name('admin.logout');
+// Route::get('/login/admin', 'AuthAdmin\LoginController@showLoginForm')->name('admin.login');
+// Route::post('/admin/login', 'AuthAdmin\LoginController@login')->name('admin.login.submit');
+// Route::post('/admin/logout', 'AuthAdmin\LoginController@logout')->name('admin.logout');
 Route::get('/admin-password/reset', 'AdminController@gantiPasswordIndex')->name('admin.password-reset-form');
 Route::post('/admin-password/reset', 'AdminController@gantiPassword')->name('admin.password-reset');
 Route::get('/coba', 'AdminController@buatPassword');
-// End Admin Auth
 
 // Student Day
 Route::resource('sd', 'StudentDayController');

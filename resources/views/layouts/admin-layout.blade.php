@@ -47,16 +47,14 @@
         <div class="navbar-collapse collapse">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
-                    <a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> </a>
+                    <a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ Auth::user('admin')->name }}</a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd_user">
                         <a href="{{ route('admin.password-reset-form') }}" class="dropdown-item">
                             <i class="fa-key fa"></i> Ganti Password
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.logout') }}"
-                            onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
+                        <a class="dropdown-item" href="/admin/logout">
                             <i class="fa fa-power-off"></i>
-                            {{-- {{ __('Logout') }} --}}
+                            Logout
                         </a>
 
                         {{-- <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
