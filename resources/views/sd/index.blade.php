@@ -64,11 +64,11 @@
                         <h5 style="color: #FF4B2B" class="text-center my-5 wow fadeInUp" data-wow-delay="0.5s">Pendaftaran Student Day belum bisa diakses</h5>
     
                         <p class="text-center">
-                            <?php $i = 2 ?>
+                            <?php $i = 1 ?>
                             @if ($i == 1)
-                                {{-- <a href="{{ route('login') }}" id="verify" style="border-radius:22px" class="btn btn-secondary">Verifikasi Pendaftaran</a> --}}
+                                <a href="#" id="verify" style="border-radius:22px" class="btn btn-secondary">Verifikasi Pendaftaran</a>
                             @else
-                                {{-- <a href="{{ route('login') }}" id="verify" style="border-radius:22px" class="btn btn-secondary" aria-disabled="true">Verifikasi Pendaftaran</a> --}}
+                                <a href="{{ route('login') }}" id="verify" style="border-radius:22px" class="btn btn-secondary" aria-disabled="true">Verifikasi Pendaftaran</a>
                             @endif
                         </p>
                     </div>

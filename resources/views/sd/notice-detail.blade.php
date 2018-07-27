@@ -19,8 +19,8 @@
                 </div>
             @endif
             
-            <div class="text-justify mt-4 mb-5" id="konten">
-                <span>{{ $data->konten }}</span>
+            <div class="text-justify mt-5 mb-5" id="konten">
+                <p style="line-height: 1.5; font-size: 24px;">{{ $data->konten }}</p>
             </div>
         </div>
     </div>

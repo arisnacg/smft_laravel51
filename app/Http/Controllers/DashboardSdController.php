@@ -29,7 +29,7 @@ class DashboardSdController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:user');
+        $this->middleware('auth');
     }
 
     /**
@@ -145,12 +145,14 @@ class DashboardSdController extends Controller
         $prestasis = DB::table('prestasis')
                     ->leftJoin('users', 'prestasis.mahasiswa_id', '=', 'users.id')
                     ->select('prestasis.nama')
+                    ->where('users.id', '=', Auth::user()->id)
                     ->get();
         // return $prestasis;
         
         $organisasis = DB::table('organisasis')
                     ->leftJoin('users', 'organisasis.mahasiswa_id', '=', 'users.id')
                     ->select('organisasis.nama')
+                    ->where('users.id', '=', Auth::user()->id)
                     ->get();
         // return $organisasis;
 
@@ -180,7 +182,7 @@ class DashboardSdController extends Controller
                 ->where('users.id', '=', Auth::user()->id)
                 ->first();
         $pdf = PDF::loadView('sd.evaluasi-pdf', compact('data'));
-        return $pdf->setPaper('a4', 'potrait')->stream();
+        return $pdf->setPaper('a5', 'landscape')->stream();
     }
 
     /**
@@ -227,7 +229,11 @@ class DashboardSdController extends Controller
             return redirect('/ganti-password')->with('info', 'Password harus diganti terlebih dahulu');
         }
         $data = User::find(Auth::user()->id);
-        $program_studi = ProgramStudi::all();
+        $program_studi = DB::table('program_studis')
+                    ->join('users', 'program_studis.id', '=', 'users.program_studi')
+                    ->select('program_studis.nama as prodi')
+                    ->where('program_studis.id', '=', $data->program_studi)
+                    ->first();
         $angkatans = Angkatan::all();
         $gol_darahs = GolonganDarah::all();
         $jenis_kelamins = JenisKelamin::all();
@@ -252,7 +258,7 @@ class DashboardSdController extends Controller
             [
                 'nama' => 'required',
                 'nama_panggilan' => 'required',
-                'program_studi' => 'required',
+                // 'program_studi' => 'required',
                 'jenis_kelamin' => 'required',
                 'agama' => 'required',
                 'gol_darah' => 'required',
@@ -289,7 +295,7 @@ class DashboardSdController extends Controller
         $mahasiswa = User::find($id);
         $mahasiswa->nama = $request->nama;
         $mahasiswa->nama_panggilan = $request->nama_panggilan;
-        $mahasiswa->program_studi = $request->program_studi;
+        // $mahasiswa->program_studi = $request->program_studi;
         $mahasiswa->jenis_kelamin = $request->jenis_kelamin;
         $mahasiswa->agama = $request->agama;
         $mahasiswa->gol_darah = $request->gol_darah;

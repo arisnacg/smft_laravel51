@@ -72,7 +72,7 @@
                     </button>
                 </div>
                 <form method="POST" action="/organisasi">
-                @csrf
+                {{ csrf_field() }}
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="label-control">Nama Organisasi</label>

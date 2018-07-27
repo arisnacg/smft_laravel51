@@ -53,16 +53,7 @@
                             <tr>
                                 <td><label for="program_studi">Program Studi</label></td>
                                 <td>
-                                    <select name="program_studi" id="program_studi" class="custom-select" required>
-                                        @foreach ($program_studi as $prodi)
-                                        <option @if($data->program_studi == $prodi->id) selected @endif value="{{$prodi->id}}">{{$prodi->nama}}</option>
-                                        @endforeach
-                                    </select>
-                                    @if($errors->has('program_studi'))
-                                        <span class="text-danger" role="alert">
-                                            <strong>{{ $errors->first('program_studi') }}</strong>
-                                        </span> 
-                                    @endif
+                                    <input type="text" class="form-control" name="nama_panggilan" id="nama_panggilan" value="{{ $program_studi->prodi }}" disabled required>
                                 </td>
                             </tr>
                             <tr>

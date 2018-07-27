@@ -331,7 +331,7 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Tidak</button>
                                                         <form action="{{ route('admin.mahasiswa-delete', $mahasiswa->id) }}" method="post">
-                                                            @csrf
+                                                            {{ csrf_field() }}
                                                             {{method_field('DELETE')}}
                                                             <button type="submit" class="btn btn-danger"><i class="fa fa-check"></i> Ya</button>
                                                         </form>

@@ -33,7 +33,7 @@
                     </thead>
                     <tbody>
                         @if (count($data))
-                            @foreach ($data as $pengumuman)
+                            @foreach ($data as $i => $pengumuman)
                                 <tr>
                                     <th
                                         data-toggle="modal" data-target="#modal"
@@ -41,7 +41,7 @@
                                         data-konten="{{ $pengumuman->konten }}"
                                         data-gambar="/thumbnail/{{ $pengumuman->gambar }}"
                                         style="cursor:pointer"
-                                    >{{ $loop->iteration }}
+                                    >{{ $i+1 }}
                                     </th>
                                     <td
                                         data-toggle="modal" data-target="#modal"
@@ -82,7 +82,7 @@
                                                     </div>
                                                     <form action="{{ route('admin.sd-pengumuman-destroy', $pengumuman->id) }}" method="POST">
                                                         <div class="modal-body">
-                                                            @csrf
+                                                            {{ csrf_field() }}
                                                             {{ method_field('delete') }}
                                                             Apakah Anda yakin menghapus pengumuman?</b>
                                                     

@@ -15,6 +15,17 @@ Route::get('/', function () {
     return view('home.index');
 });
 
+
+Route::get('/pass', function(){
+	$data = App\User::all();
+	foreach($data as $row){
+		App\User::find($row->id)->update([
+			'password' => bcrypt($row->nim)
+		]);
+	}
+	return 1;
+});
+
 //Login User
 Route::get('/login', 'Auth\AuthController@getLogin')->name('login');
 Route::post('/login', 'Auth\AuthController@postLogin');

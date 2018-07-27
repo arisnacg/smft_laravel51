@@ -40,6 +40,32 @@
 			</div>
 		</section><!-- #about -->
 
+		{{-- Modal --}}
+		<div class="modal fade" id="modalIndex" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+                	</div>
+					<a href="{{ route('sd.index')}}">
+						<div class="modal-body" style="padding: 0px !important;">
+							<img class="img-fluid" src="/thumbnail/pengumuman_download.png" alt="">
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>    
+
 	</main>
+@endsection
+
+@section('custom_javascript')
+	<script>
+		$(document).ready(function () {
+			$('#modalIndex').modal('show');
+		}); 
+	</script>
 @endsection
 

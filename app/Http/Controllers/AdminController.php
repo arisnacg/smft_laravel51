@@ -240,7 +240,7 @@ class AdminController extends Controller
         if($request->hasFile('gambar')){
     		$thumbnail = $request->file('gambar');
     		$fileName = time() . '.' .$thumbnail->getClientOriginalExtension();
-    		Image::make($thumbnail)->save( public_path('/thumbnail/' . $fileName ) );
+    		Image::make($thumbnail)->save('thumbnail/' . $fileName);
     		$pengumuman->gambar = $fileName;
         }
         $pengumuman->save();
@@ -430,11 +430,11 @@ class AdminController extends Controller
         
         if ($request->hasFile('gambar')) {
             $oldFileName = $pengumuman->gambar;
-            File::delete(public_path('/thumbnail/'. $oldFileName));
+            File::delete('thumbnail/'. $oldFileName);
 
             $thumbnail = $request->file('gambar');
     		$fileName = time() . '.' .$thumbnail->getClientOriginalExtension();
-    		Image::make($thumbnail)->save( public_path('/thumbnail/' . $fileName ) );
+    		Image::make($thumbnail)->save('thumbnail/' . $fileName);
     		$pengumuman->gambar = $fileName;
         }
 
