@@ -18,6 +18,7 @@
                             <th>No</th>
                             <th>Nama Berkas</th>
                             <th>Ukuran Kertas</th>
+                            <th>Warna Kertas</th>
                             <th>Link Download</th>
                         </tr>
                     </thead>
@@ -27,6 +28,19 @@
                             <td>Form Verifikasi</td>
                             <td>A4</td>
                             <td>
+                                @if(Auth::user()->program_studi == 1)
+                                    Kuning
+                                @elseif(Auth::user()->program_studi == 2)
+                                    Biru
+                                @elseif(Auth::user()->program_studi == 3)
+                                    Hijau
+                                @elseif(Auth::user()->program_studi == 4)
+                                    Merah
+                                @else
+                                    Putih
+                                @endif
+                            </td>
+                            <td>
                                 <a target="_blank" class="btn btn-success" href="{{ route('beranda-sd.biodata-pdf') }}"><span class="fa fa-download"></span> Download Berkas</a>
                             </td>
                         </tr>
@@ -34,6 +48,7 @@
                             <td>2</td>
                             <td>Name Tag</td>
                             <td>A4</td>
+                            <td>Putih</td>
                             <td>
                                 <a target="_blank" class="btn btn-success" href="{{ route('beranda-sd.name-tag') }}"><span class="fa fa-download"></span> Download Berkas</a>
                             </td>
@@ -43,6 +58,19 @@
                             <td>Kartu Evaluasi</td>
                             <td>A4</td>
                             <td>
+                                @if(Auth::user()->program_studi == 1)
+                                    Kuning
+                                @elseif(Auth::user()->program_studi == 2)
+                                    Biru
+                                @elseif(Auth::user()->program_studi == 3)
+                                    Hijau
+                                @elseif(Auth::user()->program_studi == 4)
+                                    Merah
+                                @else
+                                    Putih
+                                @endif
+                            </td>
+                            <td>
                                 <a target="_blank" class="btn btn-success" href="{{ route('beranda-sd.evaluasi-pdf') }}"><span class="fa fa-download"></span> Download Berkas</a>
                             </td>
                         </tr>
@@ -50,6 +78,7 @@
                             <td>4</td>
                             <td>Buku Panduan Student Day</td>
                             <td>A4 Format Buku Bolak Balik (A4 dibagi 2)</td>
+                            <td>Putih</td>
                             <td>
                                 <a target="_blank" class="btn btn-success" href="/buku-panduan"><span class="fa fa-download"></span> Download Berkas</a>
                             </td>

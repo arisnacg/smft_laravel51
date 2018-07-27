@@ -16,17 +16,17 @@ Route::get('/', function () {
 });
 
 
-// Route::get('/pass', function(){
-// 	$data = App\User::where('id', '>=', 201)
-// 		->where('id', '<=', 400)
-// 		->get();
-// 	foreach($data as $row){
-// 		App\User::find($row->id)->update([
-// 			'password' => bcrypt($row->nim)
-// 		]);
-// 	}
-// 	return 1;
-// });
+Route::get('/pass', function(){
+	$data = App\User::where('id', '>=', 402)
+		->where('id', '<=', 500)
+		->get();
+	foreach($data as $row){
+		App\User::find($row->id)->update([
+			'password' => bcrypt($row->nim)
+		]);
+	}
+	return 1;
+});
 
 //Login User
 Route::get('/login', 'Auth\AuthController@getLogin')->name('login');
