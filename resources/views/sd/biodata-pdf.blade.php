@@ -88,7 +88,7 @@
 		</table>
 		<table class="tabel2">
 			<tr>
-				<td colspan="7" style='text-align: center; font-size: 20px; font-weight:bold; border: 2px solid black; text-transform: uppercase;'>BIODATA MAHASISWA 
+				<td colspan="7" style='text-align: center; font-size: 20px; font-weight:bold; border: 2px solid black; text-transform: uppercase;'>VERIFIKASI MAHASISWA 
 					{{ $data->prodi }}
 				</td>
 			</tr>

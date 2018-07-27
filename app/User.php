@@ -22,6 +22,7 @@ class User extends Model implements AuthenticatableContract,
      * @var string
      */
     protected $table = 'users';
+    protected $dateFormat = 'Y-m-d H:i';
 
     /**
      * The attributes that are mass assignable.
@@ -41,7 +42,7 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $hidden = ['password', 'remember_token'];
 
-    protected $dates = ['created_at'];
+    //protected $dates = ['created_at'];
 
     public function logs(){
         return $this->hasMany(Log::class, 'mahasiswa_id');

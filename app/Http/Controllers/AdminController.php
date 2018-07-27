@@ -43,9 +43,8 @@ class AdminController extends Controller
         $mahasiswa = User::all()->count();
         // return $mahasiswa;
         $verifikasi = DB::table('users')
-                        ->join('logs', 'users.id', '=', 'logs.mahasiswa_id')
                         ->select('users.*', 'logs.*')
-                        ->where('logs.tipe', '=', 8)
+                        ->where('users.lengkap', '=', 1)
                         ->count();
         $belum_verifikasi = $mahasiswa - $verifikasi;
                         
@@ -57,18 +56,25 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function mahasiswaIndex()
+    public function mahasiswaIndex(Request $req)
     {
-        $data = DB::table('users')
-                    ->leftJoin('program_studis', 'users.program_studi', '=', 'program_studis.id')
-                    ->leftJoin('jenis_kelamins', 'users.jenis_kelamin', '=', 'jenis_kelamins.id')
-                    ->leftJoin('golongan_darahs', 'users.gol_darah', '=', 'golongan_darahs.id')
-                    ->leftJoin('angkatans', 'users.angkatan', '=', 'angkatans.id')
-                    ->select('users.*', 'program_studis.nama as prodi', 'jenis_kelamins.nama as jk', 'golongan_darahs.nama as goldar', 'angkatans.tahun as tahun')
-                    ->orderBy('nim', 'asc')
-                    ->get();
-        // return $data;
-        return view('admin.mahasiswa', compact('data'));
+        $filter = [];
+        $data = User::with(['prodi', 'mhsangkatan']);
+        // $data = DB::table('users')
+        //             ->leftJoin('program_studis', 'users.program_studi', '=', 'program_studis.id')
+        //             ->leftJoin('jenis_kelamins', 'users.jenis_kelamin', '=', 'jenis_kelamins.id')
+        //             ->leftJoin('golongan_darahs', 'users.gol_darah', '=', 'golongan_darahs.id')
+        //             ->leftJoin('angkatans', 'users.angkatan', '=', 'angkatans.id')
+        //             ->select('users.*', 'program_studis.nama as prodi', 'jenis_kelamins.nama as jk', 'golongan_darahs.nama as goldar', 'angkatans.tahun as tahun')
+        //             ->orderBy('nim', 'asc');
+        if($req->has('lengkap')){  
+            if($req['lengkap'] == 1 || $req['lengkap'] == 0){
+                $data->where('lengkap', $req->lengkap);
+                $filter['lengkap'] = $req->lengkap;
+            }
+        }
+        $data = $data->get();
+        return view('admin.mahasiswa', compact('data', 'filter'));
     }
 
     /**
@@ -686,6 +692,74 @@ class AdminController extends Controller
             ]);
         }
         return 1;
+    }
+
+    public function exportExcel(Request $req) {
+
+        $data = User::with([
+            'prestasi',
+            'organisasi',
+            'prodi',
+            'mhsangkatan',
+            'logs' => function($query){
+                $query->where('tipe', 1)->orderBy('id', 'desc');
+            }
+        ]);
+
+        if($req->has('lengkap')){
+            $data->where('lengkap', $req->lengkap);
+        } 
+
+        $data = $data->get();
+
+        // Initialize the array which will be passed into the Excel
+        // generator.
+        $mahasiswa = []; 
+
+        // Define the Excel spreadsheet headers
+        $mahasiswa[] = [
+            'NIM', 
+            'Nama',
+            'Angkatan',
+            'Program studi', 
+            'Jumlah Prestasi', 
+            'Jumlah Pengalaman Organisasi', 
+            'Terakhir login'
+        ];
+
+
+        // Convert each member of the returned collection into an array,
+        // and append it to the payments array.
+        foreach ($data as $row) {
+            $login = "Tidak ada";
+            if(count($row->logs) > 0){
+                $login = $row->logs[0]->created_at->format('l, d F Y - H:i');
+            }
+            $prestasi = (count($row->prestasi))? count($row->prestasi) : 'Tidak ada';
+            $organisasi = (count($row->organisasi))? count($row->organisasi) : 'Tidak ada';
+            $mahasiswa[] = [
+                $row->nim,
+                $row->nama,
+                $row->mhsangkatan->tahun,
+                $row->prodi->nama,
+                $prestasi,
+                $organisasi,
+                $login
+            ];
+        }
+
+        // Generate and return the spreadsheet
+        Excel::create('peserta', function($excel) use ($mahasiswa) {
+
+            // Set the spreadsheet title, creator, and description
+            $excel->setTitle('Peserta Student Day');
+
+            // Build the spreadsheet, passing in the payments array
+            $excel->sheet('sheet1', function($sheet) use ($mahasiswa) {
+                $sheet->fromArray($mahasiswa, null, 'A1', false, false);
+            });
+
+        })->download('xlsx');
     }
 
 

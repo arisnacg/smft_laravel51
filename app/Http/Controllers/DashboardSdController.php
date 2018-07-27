@@ -68,9 +68,8 @@ class DashboardSdController extends Controller
         }
 
         if(!$status){
-            return 0;
             Auth::logout(Auth::user());
-            return redirect('/login');
+            return redirect('/login')->with('info', 'Anda tidak dapat mengakses untuk saat ini');
         }
 
         if(Auth::user()->ganti_pass == 0){
@@ -133,6 +132,11 @@ class DashboardSdController extends Controller
                 ->select('users.*', 'angkatans.tahun as tahun', 'program_studis.nama as prodi')
                 ->where('users.id', '=', Auth::user()->id)
                 ->first();
+        Log::create([
+            'mahasiswa_id' => Auth::user()->id,
+            'tipe' => 10,
+            'konten' => 'Mendownload berkas Name Tag'
+        ]);
         $pdf = PDF::loadView('sd.name-tag-pdf', compact('data'));
         return $pdf->setPaper('a4', 'potrait')->stream();
     }
@@ -167,6 +171,13 @@ class DashboardSdController extends Controller
                         'golongan_darahs.nama as goldar', 'agamas.nama as agama_')
                 ->where('users.id', '=', Auth::user()->id)
                 ->first(); 
+
+        Log::create([
+            'mahasiswa_id' => Auth::user()->id,
+            'tipe' => 10,
+            'konten' => 'Mendownload berkas Form Verifikasi'
+        ]);
+
         // return Response::json($data);       
         $pdf = PDF::loadView('sd.biodata-pdf', compact('data', 'prestasis', 'organisasis'));
         return $pdf->setPaper('a4', 'potrait')->stream();
@@ -181,8 +192,27 @@ class DashboardSdController extends Controller
                 ->select('users.*', 'program_studis.nama as prodi')
                 ->where('users.id', '=', Auth::user()->id)
                 ->first();
+        Log::create([
+            'mahasiswa_id' => Auth::user()->id,
+            'tipe' => 10,
+            'konten' => 'Mendownload berkas Kartu Evaluasi'
+        ]);
         $pdf = PDF::loadView('sd.evaluasi-pdf', compact('data'));
         return $pdf->setPaper('a5', 'landscape')->stream();
+    }
+
+    public function panduanPdf(){
+        Log::create([
+            'mahasiswa_id' => Auth::user()->id,
+            'tipe' => 10,
+            'konten' => 'Mendownload berkas Buku Panduan'
+        ]);
+        $file= public_path(). "/berkas/buku_panduan.pdf";
+        $headers = array(
+              'Content-Type: application/pdf',
+            );
+
+        return Response::download($file, 'buku_panduan_student_day_2018.pdf', $headers);
     }
 
     /**

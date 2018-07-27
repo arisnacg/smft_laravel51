@@ -53,6 +53,14 @@
                                         Masuk
                                     </button>
                                 </div>
+                                <hr>
+                                <p class="text-center">Kontak untuk dihubungi :</p>
+                                <center>
+                                    <b>SEKRETARIATAN</b>
+                                    <h6>No Hp. 085739948063, ID Line : febbysanjiwani</h6>
+                                    <b>PUBLIKASI DAN DOKUMENTASI</b>
+                                    <h6>No Hp. 081246283634, ID Line : riken270997</h6>
+                                </center>
                             </form>
                         </div>
                     </div>

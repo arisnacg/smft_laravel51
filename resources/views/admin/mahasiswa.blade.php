@@ -20,7 +20,39 @@
     <div class="card mb-4">
         <div class="card-body">
             <a href="{{ route('admin.mahasiswa-create') }}" class="btn btn-primary mb-3"><i class="fa fa-plus-circle mr-1"></i>Tambah mahasiswa</a>
-            <a href="/admin-mahasiswa/export-excel" class="btn btn-success mb-3"><i class="fa fa-file mr-1"></i>Export Excel</a>
+            <a
+            @if(isset($filter['lengkap']))
+                href="/export-excel?lengkap={{$filter['lengkap']}}"
+            @else
+                href="/export-excel"
+            @endif
+             class="btn btn-success mb-3"><i class="fa fa-file mr-1"></i>Export Excel</a>
+            <hr>
+            <form action="/admin-mahasiswa" action="GET">
+                <div class="form-group row">
+                    <div class="col-md-3 col-sm-12">
+                        <select name="lengkap" class="form-control">
+                            <option value="">Semua</option>
+                            <?php
+                                $arr = ['Belum Verifikasi', 'Sudah Verifikasi'];
+                            ?>
+                            @foreach($arr as $i => $r)
+                                <option value="{{ $i }}"
+                                    @if(isset($filter['lengkap']))
+                                        @if($i == $filter['lengkap']) selected @endif
+                                    @endif
+                                >
+                                    {{ $r }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-2 col-sm-12">
+                        <button type="submit" class="btn btn-primary"><span class="fa fa-filter"></span> Filter</button>
+                    </div>
+                </div>
+            </form>
+            <hr>
             <div class="table-responsive">
                 <table id="table" class="table table-hover">
                     <thead>
@@ -30,18 +62,18 @@
                             <th scope="col">Nama</th>
                             <th scope="col">Prodi</th>
                             <th scope="col">Pengalaman</th>
+                            <th>Status Verifikasi</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if(count($data))
                             @foreach ($data as  $i => $mahasiswa)
-                                <tr>
-                                    <th data-toggle="modal" data-target="#mahasiswa" 
+                                <tr data-toggle="modal" data-target="#mahasiswa" 
                                         data-nim=": {{ $mahasiswa->nim }}" 
                                         data-nama=": {{ $mahasiswa->nama }}" 
                                         data-nama-panggilan=": {{ $mahasiswa->nama_panggilan }}"
-                                        data-prodi=": {{ $mahasiswa->prodi }}" 
+                                        data-prodi=": {{ $mahasiswa->prodi->nama }}" 
                                         data-jenis-kelamin=": {{ $mahasiswa->jk }}"
                                         data-agama=": 
                                         @if($mahasiswa->agama == '1')
@@ -94,206 +126,38 @@
                                             Belum ditentukan
                                         @endif
                                         "
-                                        data-angkatan=": {{ $mahasiswa->tahun }}"
+                                        data-angkatan=": {{ $mahasiswa->mhsangkatan->tahun }}"
                                         
-                                        style="cursor:pointer">{{ $i+1 }}
+                                        style="cursor:pointer">
+                                    <th>{{ $i+1 }}
                                     </th>
-                                    <td 
-                                        data-toggle="modal" data-target="#mahasiswa" 
-                                        data-nim=": {{ $mahasiswa->nim }}" 
-                                        data-nama=": {{ $mahasiswa->nama }}" 
-                                        data-nama-panggilan=": {{ $mahasiswa->nama_panggilan }}"
-                                        data-prodi=": {{ $mahasiswa->prodi }}" 
-                                        data-jenis-kelamin=": {{ $mahasiswa->jk }}"
-                                        data-agama=": 
-                                        @if($mahasiswa->agama == '1')
-                                            Hindu
-                                        @elseif($mahasiswa->agama == '2')
-                                            Islam
-                                        @elseif($mahasiswa->agama == '3')
-                                            Budha
-                                        @elseif($mahasiswa->agama == '4')
-                                            Kristen Protestan
-                                        @elseif($mahasiswa->agama == '5')
-                                            Kristen Katolik
-                                        @elseif($mahasiswa->agama == '6')
-                                            Konghucu
-                                        @endif
-                                        "
-                                        data-gol-darah=": {{ $mahasiswa->goldar }}"
-                                        data-tempat-lahir=": {{ $mahasiswa->tempat_lahir }}"
-                                        data-tanggal-lahir=": {{ $mahasiswa->tanggal_lahir }}"
-                                        data-alamat=": {{ $mahasiswa->alamat }}"
-                                        data-alamat-sekarang=": {{ $mahasiswa->alamat_sekarang }}"
-                                        data-no-telepon=": {{ $mahasiswa->no_telepon }}"
-                                        data-no-hp=": {{ $mahasiswa->no_hp }}"
-                                        data-email=": {{ $mahasiswa->email }}"
-                                        data-asal-sekolah=": {{ $mahasiswa->asal_sekolah }}"
-                                        data-alasan-kuliah=": {{ $mahasiswa->alasan_kuliah }}"
-                                        data-hobi=": {{ $mahasiswa->hobi }}"
-                                        data-cita-cita=": {{ $mahasiswa->cita_cita }}"
-                                        data-idola=": {{ $mahasiswa->idola }}"
-                                        data-moto=": {{ $mahasiswa->moto }}"
-                                        data-jumlah-saudara=": {{ $mahasiswa->jumlah_saudara }}"
-                                        data-nama-ayah=": {{ $mahasiswa->nama_ayah }}" }}
-                                        data-nama-ibu=": {{ $mahasiswa->nama_ibu }}"
-                                        data-vegetarian=":
-                                        @if($mahasiswa->vegetarian == '1')
-                                           Ya
-                                        @elseif($mahasiswa->vegetarian == '2')
-                                            Tidak
-                                        @else
-                                            Belum ditentukan
-                                        @endif
-                                        "
-                                        data-penyakit-khusus=": {{ $mahasiswa->penyakit_khusus }}"
-                                        data-mahasiswa-baru=": 
-                                        @if($mahasiswa->mahasiswa_baru == '1')
-                                            Ya
-                                        @elseif($mahasiswa->mahasiswa_baru == '2')
-                                            Tidak
-                                        @else
-                                            Belum ditentukan
-                                        @endif
-                                        "
-                                        data-angkatan=": {{ $mahasiswa->tahun }}"
-                                        style="cursor:pointer">
-                                            {{ $mahasiswa->nim }}
-                                    </td>
-                                    <td 
-                                        data-toggle="modal" data-target="#mahasiswa" 
-                                        data-nim=": {{ $mahasiswa->nim }}" 
-                                        data-nama=": {{ $mahasiswa->nama }}" 
-                                        data-nama-panggilan=": {{ $mahasiswa->nama_panggilan }}"
-                                        data-prodi=": {{ $mahasiswa->prodi }}" 
-                                        data-jenis-kelamin=": {{ $mahasiswa->jk }}"
-                                        data-agama=": 
-                                        @if($mahasiswa->agama == '1')
-                                            Hindu
-                                        @elseif($mahasiswa->agama == '2')
-                                            Islam
-                                        @elseif($mahasiswa->agama == '3')
-                                            Budha
-                                        @elseif($mahasiswa->agama == '4')
-                                            Kristen Protestan
-                                        @elseif($mahasiswa->agama == '5')
-                                            Kristen Katolik
-                                        @elseif($mahasiswa->agama == '6')
-                                            Konghucu
-                                        @endif
-                                        "
-                                        data-gol-darah=": {{ $mahasiswa->goldar }}"
-                                        data-tempat-lahir=": {{ $mahasiswa->tempat_lahir }}"
-                                        data-tanggal-lahir=": {{ $mahasiswa->tanggal_lahir }}"
-                                        data-alamat=": {{ $mahasiswa->alamat }}"
-                                        data-alamat-sekarang=": {{ $mahasiswa->alamat_sekarang }}"
-                                        data-no-telepon=": {{ $mahasiswa->no_telepon }}"
-                                        data-no-hp=": {{ $mahasiswa->no_hp }}"
-                                        data-email=": {{ $mahasiswa->email }}"
-                                        data-asal-sekolah=": {{ $mahasiswa->asal_sekolah }}"
-                                        data-alasan-kuliah=": {{ $mahasiswa->alasan_kuliah }}"
-                                        data-hobi=": {{ $mahasiswa->hobi }}"
-                                        data-cita-cita=": {{ $mahasiswa->cita_cita }}"
-                                        data-idola=": {{ $mahasiswa->idola }}"
-                                        data-moto=": {{ $mahasiswa->moto }}"
-                                        data-jumlah-saudara=": {{ $mahasiswa->jumlah_saudara }}"
-                                        data-nama-ayah=": {{ $mahasiswa->nama_ayah }}" }}
-                                        data-nama-ibu=": {{ $mahasiswa->nama_ibu }}"
-                                        data-vegetarian=":
-                                        @if($mahasiswa->vegetarian == '1')
-                                           Ya
-                                        @elseif($mahasiswa->vegetarian == '2')
-                                            Tidak
-                                        @else
-                                            Belum ditentukan
-                                        @endif
-                                        "
-                                        data-penyakit-khusus=": {{ $mahasiswa->penyakit_khusus }}"
-                                        data-mahasiswa-baru=": 
-                                        @if($mahasiswa->mahasiswa_baru == '1')
-                                            Ya
-                                        @elseif($mahasiswa->mahasiswa_baru == '2')
-                                            Tidak
-                                        @else
-                                            Belum ditentukan
-                                        @endif
-                                        "
-                                        data-angkatan=": {{ $mahasiswa->tahun }}"
-                                        style="cursor:pointer">
-                                            {{ $mahasiswa->nama }}
-                                    </td>
-                                    <td 
-                                        data-toggle="modal" data-target="#mahasiswa" 
-                                        data-nim=": {{ $mahasiswa->nim }}" 
-                                        data-nama=": {{ $mahasiswa->nama }}" 
-                                        data-nama-panggilan=": {{ $mahasiswa->nama_panggilan }}"
-                                        data-prodi=": {{ $mahasiswa->prodi }}" 
-                                        data-jenis-kelamin=": {{ $mahasiswa->jk }}"
-                                        data-agama=": 
-                                        @if($mahasiswa->agama == '1')
-                                            Hindu
-                                        @elseif($mahasiswa->agama == '2')
-                                            Islam
-                                        @elseif($mahasiswa->agama == '3')
-                                            Budha
-                                        @elseif($mahasiswa->agama == '4')
-                                            Kristen Protestan
-                                        @elseif($mahasiswa->agama == '5')
-                                            Kristen Katolik
-                                        @elseif($mahasiswa->agama == '6')
-                                            Konghucu
-                                        @endif
-                                        "
-                                        data-gol-darah=": {{ $mahasiswa->goldar }}"
-                                        data-tempat-lahir=": {{ $mahasiswa->tempat_lahir }}"
-                                        data-tanggal-lahir=": {{ $mahasiswa->tanggal_lahir }}"
-                                        data-alamat=": {{ $mahasiswa->alamat }}"
-                                        data-alamat-sekarang=": {{ $mahasiswa->alamat_sekarang }}"
-                                        data-no-telepon=": {{ $mahasiswa->no_telepon }}"
-                                        data-no-hp=": {{ $mahasiswa->no_hp }}"
-                                        data-email=": {{ $mahasiswa->email }}"
-                                        data-asal-sekolah=": {{ $mahasiswa->asal_sekolah }}"
-                                        data-alasan-kuliah=": {{ $mahasiswa->alasan_kuliah }}"
-                                        data-hobi=": {{ $mahasiswa->hobi }}"
-                                        data-cita-cita=": {{ $mahasiswa->cita_cita }}"
-                                        data-idola=": {{ $mahasiswa->idola }}"
-                                        data-moto=": {{ $mahasiswa->moto }}"
-                                        data-jumlah-saudara=": {{ $mahasiswa->jumlah_saudara }}"
-                                        data-nama-ayah=": {{ $mahasiswa->nama_ayah }}" }}
-                                        data-nama-ibu=": {{ $mahasiswa->nama_ibu }}"
-                                        data-vegetarian=":
-                                        @if($mahasiswa->vegetarian == '1')
-                                           Ya
-                                        @elseif($mahasiswa->vegetarian == '2')
-                                            Tidak
-                                        @else
-                                            Belum ditentukan
-                                        @endif
-                                        "
-                                        data-penyakit-khusus=": {{ $mahasiswa->penyakit_khusus }}"
-                                        data-mahasiswa-baru=": 
-                                        @if($mahasiswa->mahasiswa_baru == '1')
-                                            Ya
-                                        @elseif($mahasiswa->mahasiswa_baru == '2')
-                                            Tidak
-                                        @else
-                                            Belum ditentukan
-                                        @endif
-                                        "
-                                        data-angkatan=": {{ $mahasiswa->tahun }}"
-                                        style="cursor:pointer">{{ $mahasiswa->prodi }}
+                                    <td>
+                                        {{ $mahasiswa->nim }}
                                     </td>
                                     <td>
-                                        <a href="/prestasi/{{ $mahasiswa->id }}" class="btn btn-success btn-sm"><i class="fa fa-trophy"></i> Prestasi</a>
+                                        {{ $mahasiswa->nama }}
+                                    </td>
+                                    <td>
+                                        {{ $mahasiswa->prodi->nama }}
+                                    </td>
+                                    <td>
+                                        <a href="/prestasi/{{ $mahasiswa->id }}" class="btn btn-success btn-sm" style="margin-bottom: 5px"><i class="fa fa-trophy"></i> Prestasi</a>
                                         <a href="/organisasi/{{ $mahasiswa->id }}" class="btn btn-success btn-sm"><i class="fa fa-building"></i> Organisasi</a>
                                     </td>
                                     <td>
+                                        @if($mahasiswa->lengkap)
+                                            Sudah
+                                        @else
+                                            Belum
+                                        @endif
+                                    </td>
+                                    <td>
                                         <!-- Edit Buton -->
-                                        <a href="/log/{{ $mahasiswa->id }}" class="btn btn-info btn-sm"><i class="fa fa-list"></i></a>
+                                        <a style="margin-bottom: 3px; display: block;" href="/log/{{ $mahasiswa->id }}" class="btn btn-info btn-sm"><i class="fa fa-list"></i></a>
                                         <!-- Edit Buton -->
-                                        <a href="{{ route('admin.mahasiswa-edit', $mahasiswa->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>
+                                        <a style="margin-bottom: 3px; display: block;" href="{{ route('admin.mahasiswa-edit', $mahasiswa->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>
                                         <!--Delete Button -->
-                                        <button data-toggle="modal" data-target="#delete" class="btn btn-danger btn-sm"
+                                        <button data-toggle="modal" data-target="#delete" class="btn btn-block btn-danger btn-sm"
                                         data-nim=": {{ $mahasiswa->nim }}" 
                                         data-nama=": {{ $mahasiswa->nama }}" 
                                         data-prodi=": {{ $mahasiswa->prodi }}">

@@ -16,15 +16,17 @@ Route::get('/', function () {
 });
 
 
-Route::get('/pass', function(){
-	$data = App\User::all();
-	foreach($data as $row){
-		App\User::find($row->id)->update([
-			'password' => bcrypt($row->nim)
-		]);
-	}
-	return 1;
-});
+// Route::get('/pass', function(){
+// 	$data = App\User::where('id', '>=', 201)
+// 		->where('id', '<=', 400)
+// 		->get();
+// 	foreach($data as $row){
+// 		App\User::find($row->id)->update([
+// 			'password' => bcrypt($row->nim)
+// 		]);
+// 	}
+// 	return 1;
+// });
 
 //Login User
 Route::get('/login', 'Auth\AuthController@getLogin')->name('login');
@@ -68,7 +70,7 @@ Route::get('/admin-program-studi', 'AdminController@programStudiIndex')->name('a
 Route::post('/admin-program-studi', 'AdminController@programStudiStore')->name('admin.program-studi-store');
 Route::put('/admin-program-studi/{id}', 'AdminController@programStudiUpdate')->name('admin.program-studi-update');
 Route::delete('/admin-program-studi/{id}', 'AdminController@programStudiDestroy')->name('admin.program-studi-destroy');
-Route::get('/admin-mahasiswa/export-excel', 'AdminController@excel');
+Route::get('/export-excel', 'AdminController@exportExcel');
 Route::resource('/log', 'LogController');
 Route::resource('/prestasi', 'PrestasiController');
 Route::resource('/organisasi', 'OrganisasiController');
@@ -96,6 +98,7 @@ Route::get('/beranda-sd-cetak-berkas', 'DashboardSdController@cetakBerkas')->nam
 Route::get('/beranda-sd-name-tag-pdf', 'DashboardSdController@nameTag')->name('beranda-sd.name-tag');
 Route::get('/beranda-sd-biodata-pdf', 'DashboardSdController@biodataPdf')->name('beranda-sd.biodata-pdf');
 Route::get('/beranda-sd-evaluasi-pdf', 'DashboardSdController@evaluasiPdf')->name('beranda-sd.evaluasi-pdf');
+Route::get('/buku-panduan', 'DashboardSdController@panduanPdf');
 Route::get('/ganti-password', 'PasswordController@gantiPasswordForm');
 Route::post('/ganti-password', 'PasswordController@gantiPassword');
 // End Student Day Mahasiswa

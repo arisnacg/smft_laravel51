@@ -31,7 +31,7 @@
                             <tr>
                                 <td><label for="nama">Nama</label></td>
                                 <td>
-                                    <input type="text" class="form-control" name="nama" id="nama" value="{{ $data->nama }}" required>
+                                    <input type="text" class="form-control" id="nama" value="{{ $data->nama }}" required disabled>
                                     @if($errors->has('nama'))
                                         <span class="text-danger" role="alert">
                                             <strong>{{ $errors->first('nama') }}</strong>
