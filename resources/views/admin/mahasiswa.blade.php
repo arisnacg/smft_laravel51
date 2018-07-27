@@ -69,7 +69,9 @@
                     <tbody>
                         @if(count($data))
                             @foreach ($data as  $i => $mahasiswa)
-                                <tr data-toggle="modal" data-target="#mahasiswa" 
+                                <tr>
+                                    <th
+                                        data-toggle="modal" data-target="#mahasiswa" 
                                         data-nim=": {{ $mahasiswa->nim }}" 
                                         data-nama=": {{ $mahasiswa->nama }}" 
                                         data-nama-panggilan=": {{ $mahasiswa->nama_panggilan }}"
@@ -128,23 +130,267 @@
                                         "
                                         data-angkatan=": {{ $mahasiswa->mhsangkatan->tahun }}"
                                         
-                                        style="cursor:pointer">
-                                    <th>{{ $i+1 }}
+                                        style="cursor:pointer"
+                                    >{{ $i+1 }}
                                     </th>
-                                    <td>
+                                    <td
+                                        data-toggle="modal" data-target="#mahasiswa" 
+                                        data-nim=": {{ $mahasiswa->nim }}" 
+                                        data-nama=": {{ $mahasiswa->nama }}" 
+                                        data-nama-panggilan=": {{ $mahasiswa->nama_panggilan }}"
+                                        data-prodi=": {{ $mahasiswa->prodi->nama }}" 
+                                        data-jenis-kelamin=": {{ $mahasiswa->jk }}"
+                                        data-agama=": 
+                                        @if($mahasiswa->agama == '1')
+                                            Hindu
+                                        @elseif($mahasiswa->agama == '2')
+                                            Islam
+                                        @elseif($mahasiswa->agama == '3')
+                                            Budha
+                                        @elseif($mahasiswa->agama == '4')
+                                            Kristen Protestan
+                                        @elseif($mahasiswa->agama == '5')
+                                            Kristen Katolik
+                                        @elseif($mahasiswa->agama == '6')
+                                            Konghucu
+                                        @endif
+                                        "
+                                        data-gol-darah=": {{ $mahasiswa->goldar }}"
+                                        data-tempat-lahir=": {{ $mahasiswa->tempat_lahir }}"
+                                        data-tanggal-lahir=": {{ $mahasiswa->tanggal_lahir }}"
+                                        data-alamat=": {{ $mahasiswa->alamat }}"
+                                        data-alamat-sekarang=": {{ $mahasiswa->alamat_sekarang }}"
+                                        data-no-telepon=": {{ $mahasiswa->no_telepon }}"
+                                        data-no-hp=": {{ $mahasiswa->no_hp }}"
+                                        data-email=": {{ $mahasiswa->email }}"
+                                        data-asal-sekolah=": {{ $mahasiswa->asal_sekolah }}"
+                                        data-alasan-kuliah=": {{ $mahasiswa->alasan_kuliah }}"
+                                        data-hobi=": {{ $mahasiswa->hobi }}"
+                                        data-cita-cita=": {{ $mahasiswa->cita_cita }}"
+                                        data-idola=": {{ $mahasiswa->idola }}"
+                                        data-moto=": {{ $mahasiswa->moto }}"
+                                        data-jumlah-saudara=": {{ $mahasiswa->jumlah_saudara }}"
+                                        data-nama-ayah=": {{ $mahasiswa->nama_ayah }}" }}
+                                        data-nama-ibu=": {{ $mahasiswa->nama_ibu }}"
+                                        data-vegetarian=":
+                                        @if($mahasiswa->vegetarian == '1')
+                                           Ya
+                                        @elseif($mahasiswa->vegetarian == '2')
+                                            Tidak
+                                        @else
+                                            Belum ditentukan
+                                        @endif
+                                        "
+                                        data-penyakit-khusus=": {{ $mahasiswa->penyakit_khusus }}"
+                                        data-mahasiswa-baru=": 
+                                        @if($mahasiswa->mahasiswa_baru == '1')
+                                            Ya
+                                        @elseif($mahasiswa->mahasiswa_baru == '2')
+                                            Tidak
+                                        @else
+                                            Belum ditentukan
+                                        @endif
+                                        "
+                                        data-angkatan=": {{ $mahasiswa->mhsangkatan->tahun }}"
+                                        
+                                        style="cursor:pointer"
+                                    >
                                         {{ $mahasiswa->nim }}
                                     </td>
-                                    <td>
+                                    <td
+                                        data-toggle="modal" data-target="#mahasiswa" 
+                                        data-nim=": {{ $mahasiswa->nim }}" 
+                                        data-nama=": {{ $mahasiswa->nama }}" 
+                                        data-nama-panggilan=": {{ $mahasiswa->nama_panggilan }}"
+                                        data-prodi=": {{ $mahasiswa->prodi->nama }}" 
+                                        data-jenis-kelamin=": {{ $mahasiswa->jk }}"
+                                        data-agama=": 
+                                        @if($mahasiswa->agama == '1')
+                                            Hindu
+                                        @elseif($mahasiswa->agama == '2')
+                                            Islam
+                                        @elseif($mahasiswa->agama == '3')
+                                            Budha
+                                        @elseif($mahasiswa->agama == '4')
+                                            Kristen Protestan
+                                        @elseif($mahasiswa->agama == '5')
+                                            Kristen Katolik
+                                        @elseif($mahasiswa->agama == '6')
+                                            Konghucu
+                                        @endif
+                                        "
+                                        data-gol-darah=": {{ $mahasiswa->goldar }}"
+                                        data-tempat-lahir=": {{ $mahasiswa->tempat_lahir }}"
+                                        data-tanggal-lahir=": {{ $mahasiswa->tanggal_lahir }}"
+                                        data-alamat=": {{ $mahasiswa->alamat }}"
+                                        data-alamat-sekarang=": {{ $mahasiswa->alamat_sekarang }}"
+                                        data-no-telepon=": {{ $mahasiswa->no_telepon }}"
+                                        data-no-hp=": {{ $mahasiswa->no_hp }}"
+                                        data-email=": {{ $mahasiswa->email }}"
+                                        data-asal-sekolah=": {{ $mahasiswa->asal_sekolah }}"
+                                        data-alasan-kuliah=": {{ $mahasiswa->alasan_kuliah }}"
+                                        data-hobi=": {{ $mahasiswa->hobi }}"
+                                        data-cita-cita=": {{ $mahasiswa->cita_cita }}"
+                                        data-idola=": {{ $mahasiswa->idola }}"
+                                        data-moto=": {{ $mahasiswa->moto }}"
+                                        data-jumlah-saudara=": {{ $mahasiswa->jumlah_saudara }}"
+                                        data-nama-ayah=": {{ $mahasiswa->nama_ayah }}" }}
+                                        data-nama-ibu=": {{ $mahasiswa->nama_ibu }}"
+                                        data-vegetarian=":
+                                        @if($mahasiswa->vegetarian == '1')
+                                           Ya
+                                        @elseif($mahasiswa->vegetarian == '2')
+                                            Tidak
+                                        @else
+                                            Belum ditentukan
+                                        @endif
+                                        "
+                                        data-penyakit-khusus=": {{ $mahasiswa->penyakit_khusus }}"
+                                        data-mahasiswa-baru=": 
+                                        @if($mahasiswa->mahasiswa_baru == '1')
+                                            Ya
+                                        @elseif($mahasiswa->mahasiswa_baru == '2')
+                                            Tidak
+                                        @else
+                                            Belum ditentukan
+                                        @endif
+                                        "
+                                        data-angkatan=": {{ $mahasiswa->mhsangkatan->tahun }}"
+                                        
+                                        style="cursor:pointer"
+                                    >
                                         {{ $mahasiswa->nama }}
                                     </td>
-                                    <td>
+                                    <td
+                                        data-toggle="modal" data-target="#mahasiswa" 
+                                        data-nim=": {{ $mahasiswa->nim }}" 
+                                        data-nama=": {{ $mahasiswa->nama }}" 
+                                        data-nama-panggilan=": {{ $mahasiswa->nama_panggilan }}"
+                                        data-prodi=": {{ $mahasiswa->prodi->nama }}" 
+                                        data-jenis-kelamin=": {{ $mahasiswa->jk }}"
+                                        data-agama=": 
+                                        @if($mahasiswa->agama == '1')
+                                            Hindu
+                                        @elseif($mahasiswa->agama == '2')
+                                            Islam
+                                        @elseif($mahasiswa->agama == '3')
+                                            Budha
+                                        @elseif($mahasiswa->agama == '4')
+                                            Kristen Protestan
+                                        @elseif($mahasiswa->agama == '5')
+                                            Kristen Katolik
+                                        @elseif($mahasiswa->agama == '6')
+                                            Konghucu
+                                        @endif
+                                        "
+                                        data-gol-darah=": {{ $mahasiswa->goldar }}"
+                                        data-tempat-lahir=": {{ $mahasiswa->tempat_lahir }}"
+                                        data-tanggal-lahir=": {{ $mahasiswa->tanggal_lahir }}"
+                                        data-alamat=": {{ $mahasiswa->alamat }}"
+                                        data-alamat-sekarang=": {{ $mahasiswa->alamat_sekarang }}"
+                                        data-no-telepon=": {{ $mahasiswa->no_telepon }}"
+                                        data-no-hp=": {{ $mahasiswa->no_hp }}"
+                                        data-email=": {{ $mahasiswa->email }}"
+                                        data-asal-sekolah=": {{ $mahasiswa->asal_sekolah }}"
+                                        data-alasan-kuliah=": {{ $mahasiswa->alasan_kuliah }}"
+                                        data-hobi=": {{ $mahasiswa->hobi }}"
+                                        data-cita-cita=": {{ $mahasiswa->cita_cita }}"
+                                        data-idola=": {{ $mahasiswa->idola }}"
+                                        data-moto=": {{ $mahasiswa->moto }}"
+                                        data-jumlah-saudara=": {{ $mahasiswa->jumlah_saudara }}"
+                                        data-nama-ayah=": {{ $mahasiswa->nama_ayah }}" }}
+                                        data-nama-ibu=": {{ $mahasiswa->nama_ibu }}"
+                                        data-vegetarian=":
+                                        @if($mahasiswa->vegetarian == '1')
+                                           Ya
+                                        @elseif($mahasiswa->vegetarian == '2')
+                                            Tidak
+                                        @else
+                                            Belum ditentukan
+                                        @endif
+                                        "
+                                        data-penyakit-khusus=": {{ $mahasiswa->penyakit_khusus }}"
+                                        data-mahasiswa-baru=": 
+                                        @if($mahasiswa->mahasiswa_baru == '1')
+                                            Ya
+                                        @elseif($mahasiswa->mahasiswa_baru == '2')
+                                            Tidak
+                                        @else
+                                            Belum ditentukan
+                                        @endif
+                                        "
+                                        data-angkatan=": {{ $mahasiswa->mhsangkatan->tahun }}"
+                                        
+                                        style="cursor:pointer"
+                                    >
                                         {{ $mahasiswa->prodi->nama }}
                                     </td>
                                     <td>
                                         <a href="/prestasi/{{ $mahasiswa->id }}" class="btn btn-success btn-sm" style="margin-bottom: 5px"><i class="fa fa-trophy"></i> Prestasi</a>
                                         <a href="/organisasi/{{ $mahasiswa->id }}" class="btn btn-success btn-sm"><i class="fa fa-building"></i> Organisasi</a>
                                     </td>
-                                    <td>
+                                    <td
+                                        data-toggle="modal" data-target="#mahasiswa" 
+                                        data-nim=": {{ $mahasiswa->nim }}" 
+                                        data-nama=": {{ $mahasiswa->nama }}" 
+                                        data-nama-panggilan=": {{ $mahasiswa->nama_panggilan }}"
+                                        data-prodi=": {{ $mahasiswa->prodi->nama }}" 
+                                        data-jenis-kelamin=": {{ $mahasiswa->jk }}"
+                                        data-agama=": 
+                                        @if($mahasiswa->agama == '1')
+                                            Hindu
+                                        @elseif($mahasiswa->agama == '2')
+                                            Islam
+                                        @elseif($mahasiswa->agama == '3')
+                                            Budha
+                                        @elseif($mahasiswa->agama == '4')
+                                            Kristen Protestan
+                                        @elseif($mahasiswa->agama == '5')
+                                            Kristen Katolik
+                                        @elseif($mahasiswa->agama == '6')
+                                            Konghucu
+                                        @endif
+                                        "
+                                        data-gol-darah=": {{ $mahasiswa->goldar }}"
+                                        data-tempat-lahir=": {{ $mahasiswa->tempat_lahir }}"
+                                        data-tanggal-lahir=": {{ $mahasiswa->tanggal_lahir }}"
+                                        data-alamat=": {{ $mahasiswa->alamat }}"
+                                        data-alamat-sekarang=": {{ $mahasiswa->alamat_sekarang }}"
+                                        data-no-telepon=": {{ $mahasiswa->no_telepon }}"
+                                        data-no-hp=": {{ $mahasiswa->no_hp }}"
+                                        data-email=": {{ $mahasiswa->email }}"
+                                        data-asal-sekolah=": {{ $mahasiswa->asal_sekolah }}"
+                                        data-alasan-kuliah=": {{ $mahasiswa->alasan_kuliah }}"
+                                        data-hobi=": {{ $mahasiswa->hobi }}"
+                                        data-cita-cita=": {{ $mahasiswa->cita_cita }}"
+                                        data-idola=": {{ $mahasiswa->idola }}"
+                                        data-moto=": {{ $mahasiswa->moto }}"
+                                        data-jumlah-saudara=": {{ $mahasiswa->jumlah_saudara }}"
+                                        data-nama-ayah=": {{ $mahasiswa->nama_ayah }}" }}
+                                        data-nama-ibu=": {{ $mahasiswa->nama_ibu }}"
+                                        data-vegetarian=":
+                                        @if($mahasiswa->vegetarian == '1')
+                                           Ya
+                                        @elseif($mahasiswa->vegetarian == '2')
+                                            Tidak
+                                        @else
+                                            Belum ditentukan
+                                        @endif
+                                        "
+                                        data-penyakit-khusus=": {{ $mahasiswa->penyakit_khusus }}"
+                                        data-mahasiswa-baru=": 
+                                        @if($mahasiswa->mahasiswa_baru == '1')
+                                            Ya
+                                        @elseif($mahasiswa->mahasiswa_baru == '2')
+                                            Tidak
+                                        @else
+                                            Belum ditentukan
+                                        @endif
+                                        "
+                                        data-angkatan=": {{ $mahasiswa->mhsangkatan->tahun }}"
+                                        
+                                        style="cursor:pointer"
+                                    >
                                         @if($mahasiswa->lengkap)
                                             Sudah
                                         @else
